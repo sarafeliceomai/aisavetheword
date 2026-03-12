@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
 :root {
-    --bg-color: #f0f4f8;
-    --text-color: #2d3748;
-    --accent-color: #4a5568;
-    --btn-color: #3182ce;
-    --btn-hover: #2b6cb0;
-    --card-bg: #ffffff;
+    --bg-color: #040406;
+    --text-main: #a9b7c6;
+    --neon-blue: #00f3ff;
+    --neon-purple: #9d00ff;
+    --neon-pink: #ff0055;
+    --card-bg: rgba(10, 10, 15, 0.8);
+    --scanline-color: rgba(0, 243, 255, 0.03);
 }
 
 * {
@@ -14,82 +17,185 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Share Tech Mono', monospace;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
     line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Scanline Effect */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        to bottom,
+        var(--scanline-color) 50%,
+        transparent 50%
+    );
+    background-size: 100% 4px;
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* Grid Background */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: 
+      linear-gradient(var(--neon-purple) 1px, transparent 1px),
+      linear-gradient(90deg, var(--neon-purple) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center center;
+    opacity: 0.05;
+    z-index: -1;
+    transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+    100% { transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px); }
 }
 
 .container {
     background-color: var(--card-bg);
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    padding: 50px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    box-shadow: 
+        0 0 20px rgba(0, 243, 255, 0.1),
+        inset 0 0 20px rgba(0, 243, 255, 0.05);
     text-align: center;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(5px);
 }
 
 header {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 h1 {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-    color: var(--accent-color);
-    letter-spacing: -0.5px;
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 
+        0 0 5px var(--neon-blue),
+        0 0 10px var(--neon-blue),
+        0 0 20px var(--neon-blue),
+        0 0 40px var(--neon-blue);
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue); transform: translate(0); }
+    92% { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue); transform: translate(0); }
+    94% { text-shadow: 2px 0 0 var(--neon-pink), -2px 0 0 var(--neon-blue); transform: translate(-2px, 1px); }
+    96% { text-shadow: -2px 0 0 var(--neon-pink), 2px 0 0 var(--neon-blue); transform: translate(2px, -1px); }
+    98% { text-shadow: 2px 0 0 var(--neon-pink), -2px 0 0 var(--neon-blue); transform: translate(0); }
 }
 
 header p {
     font-size: 1rem;
-    color: #718096;
+    color: #8c9baf;
+    letter-spacing: 1px;
 }
 
 .poem-display {
-    min-height: 150px;
+    min-height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 30px;
-    margin-bottom: 30px;
-    border-left: 4px solid var(--btn-color);
-    background-color: #f8fafc;
-    border-radius: 4px;
-    font-style: italic;
-    font-size: 1.2rem;
+    margin-bottom: 40px;
+    border-left: 2px solid var(--neon-pink);
+    border-right: 2px solid var(--neon-pink);
+    background: linear-gradient(90deg, rgba(255, 0, 85, 0.05) 0%, rgba(0, 0, 0, 0) 50%, rgba(255, 0, 85, 0.05) 100%);
+    font-size: 1.3rem;
     white-space: pre-wrap;
-    text-align: left;
-    transition: opacity 0.3s ease;
+    text-align: center;
+    color: #e0e6ed;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    text-shadow: 0 0 5px rgba(224, 230, 237, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.poem-display::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: skewX(-20deg);
+    animation: shine 4s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
 }
 
 button {
-    background-color: var(--btn-color);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
+    background: transparent;
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    padding: 15px 30px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
 }
 
 button:hover {
-    background-color: var(--btn-hover);
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 
+        0 0 10px var(--neon-blue),
+        0 0 20px var(--neon-blue),
+        0 0 40px var(--neon-blue);
 }
 
 button:active {
-    transform: scale(0.98);
+    transform: scale(0.95);
 }
 
 footer {
-    margin-top: 40px;
+    margin-top: 50px;
     font-size: 0.8rem;
-    color: #a0aec0;
+    color: #4a5568;
+    letter-spacing: 1px;
+}
+
+footer a {
+    color: var(--neon-purple);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
 }
